@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-
+const mongoose = require('mongoose');
 const api = process.env.API_URL;
 
 // Middleware
@@ -16,6 +16,13 @@ app.post(`${api}/products`,(req,res)=>{
     const product = req.body;
     console.log(product);
 });
+
+mongoose.connect(process.env.CONNECTION_STRING).then(()=>{
+    console.log('Connected to database');
+})
+.catch((err)=>{
+        console.log(err);
+})
 
 app.get('/',(req,res)=>{
     res.send('Hello World');
