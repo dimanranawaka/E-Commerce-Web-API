@@ -5,13 +5,9 @@ require('dotenv/config');
 
 const api = process.env.API_URL;
 
-app.get(`${api}/products`,(req,res)=>{
-    const product = {
-        id:1,
-        name: 'hair dryer',
-        image: 'some_url'
-    }
-    res.send(product);
+app.post(`${api}/products`,(req,res)=>{
+    const product = req.body;
+    console.log(product);
 });
 
 app.get('/',(req,res)=>{
