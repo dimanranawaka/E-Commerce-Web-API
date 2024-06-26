@@ -1,12 +1,13 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 
 require('dotenv/config');
 
 const api = process.env.API_URL;
 
 // Middleware
-app.use(express.json());
+app.use(bodyParser.json());
 
 app.post(`${api}/products`,(req,res)=>{
     const product = req.body;
@@ -20,5 +21,4 @@ app.get('/',(req,res)=>{
 
 app.listen(3000, ()=>{
     console.log('Server is running on port 3000 http://localhost:3000/');
-    console.log(api);
 })
