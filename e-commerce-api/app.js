@@ -5,6 +5,9 @@ require('dotenv/config');
 
 const api = process.env.API_URL;
 
+// Middleware
+app.use(express.json());
+
 app.post(`${api}/products`,(req,res)=>{
     const product = req.body;
     console.log(product);
