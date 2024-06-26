@@ -12,7 +12,7 @@ app.get(`${api}/products`,(req,res)=>{
         image: 'some_url'
     }
     res.send(product);
-})
+});
 
 app.get('/',(req,res)=>{
     res.send('Hello World');
