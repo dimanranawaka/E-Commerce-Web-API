@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const Product = require('./models/productSchema');
 // Middleware
 app.use(bodyParser.json());
-
+// Middleware for logging
 app.use(morgan('tiny'));
 
 require('dotenv/config');
