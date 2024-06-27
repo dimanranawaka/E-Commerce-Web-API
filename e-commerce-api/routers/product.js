@@ -1,7 +1,8 @@
 const express = require('express');
 const Product = require("../models/productSchema");
 const router = express.Router();
-const product = require('../models/productSchema');
+const {Category} = require('../models/categorySchema');
+
 router.get(`/`, async (req, res) => {
     const product = await Product.find();
     if (!product) {
@@ -9,25 +10,30 @@ router.get(`/`, async (req, res) => {
     }
     res.send(product);
 });
-router.post(`/`, (req, res) => {
-    const product = new Product({
-        name: req.body.name,
-        image: req.body.image,
-        countInStock: req.body.countInStock
-    });
+router.post(`/`, async (req, res) => {
 
-    product.save()
-        .then((createdProduct) => {
-            console.log('Product saved successfully:', createdProduct);
-            res.status(201).json(createdProduct);
-        })
-        .catch((err) => {
-            console.error('Error saving product:', err);
-            res.status(500).json({
-                error: err,
-                success: false
-            });
-        });
+    const category = await Category.findById(req.body.category);
+    if (!category) return res.status(400).send('Invalid Category')
+
+    let product = new Product({
+        name:req.body.name,
+        description:req.body.description,
+        richDescription:req.body.richDescription,
+        image:req.body.image,
+        brand:req.body.brand,
+        price:req.body.price,
+        category:req.body.category,
+        countInStock:req.body.countInStock,
+        rating:req.body.rating,
+        numReviews:req.body.numReviews,
+        isFeatured:req.body.isFeatured
+    })
+    product= await product.save();
+
+    if(!product){
+        return res.status(404).send('the product cannot be created');
+    }
+    res.send(product);
 });
 
 module.exports = router;
