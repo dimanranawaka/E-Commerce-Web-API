@@ -32,6 +32,18 @@ router.post('/',async (req,res)=>{
     res.send(category);
 });
 
+router.put('/:id',async(req,res)=>{
+    let category = await Category.findOneAndUpdate({_id:req.params.id},{
+        name:req.body.name,
+        icon:req.body.icon,
+        color:req.body.color
+    },{new:true})
+    if(!category){
+        return res.status(400).send('the category cannot be found!');
+    }
+    res.send(category);
+})
+
 router.delete('/:id',async(req,res)=>{
     Category.findByIdAndDelete(req.params.id).then(category=>{
         if(category){
