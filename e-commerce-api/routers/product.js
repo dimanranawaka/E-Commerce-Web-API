@@ -4,12 +4,21 @@ const router = express.Router();
 const {Category} = require('../models/categorySchema');
 
 router.get(`/`, async (req, res) => {
-    const product = await Product.find();
+    const product = await Product.find().select('name');
     if (!product) {
         res.status(500).json({ success: false });
     }
     res.send(product);
 });
+
+router.get('/:id', async(req,res)=>{
+    const product = await Product.findById({_id:req.params.id});
+    if(!product){
+        return res.status(400).send('the product cannot be found!');
+    }
+    res.send(product);
+})
+
 router.post(`/`, async (req, res) => {
 
     const category = await Category.findById(req.body.category);
