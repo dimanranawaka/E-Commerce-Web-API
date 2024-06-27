@@ -33,6 +33,7 @@ router.post('/',async (req,res)=>{
 });
 
 router.put('/:id',async(req,res)=>{
+
     let category = await Category.findOneAndUpdate({_id:req.params.id},{
         name:req.body.name,
         icon:req.body.icon,

@@ -1,7 +1,8 @@
 const express = require('express');
-const Product = require("../models/productSchema");
+const {Product} = require("../models/productSchema");
 const router = express.Router();
 const {Category} = require('../models/categorySchema');
+const mongoose = require('mongoose');
 
 router.get(`/`, async (req, res) => {
     const product = await Product.find().populate('category');
@@ -44,5 +45,30 @@ router.post(`/`, async (req, res) => {
     }
     res.send(product);
 });
+
+router.put('/:id',async(req,res)=>{
+
+
+    /* const category = await Category.findById(req.body.category);
+     if (!category){return res.status(400).send('Invalid Category')}*/
+
+    let product = await Product.findOneAndUpdate({_id:req.params.id},{
+        name:req.body.name,
+        description:req.body.description,
+        richDescription:req.body.richDescription,
+        image:req.body.image,
+        brand:req.body.brand,
+        price:req.body.price,
+        category:req.body.category,
+        countInStock:req.body.countInStock,
+        rating:req.body.rating,
+        numReviews:req.body.numReviews,
+        isFeatured:req.body.isFeatured
+    },{new: true})
+    if(!product){
+        return res.status(500).send('the product cannot be found!');
+    }
+    res.send(product);
+})
 
 module.exports = router;
