@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema.Types;
 const productSchema = new mongoose.Schema({
     // id:Number,
     name:{
-        name: String,
+        type: String,
         required:true
     },
     description:{
