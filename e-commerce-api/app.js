@@ -5,8 +5,13 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+});
+
 // productRouter
 const productRouter = require('./routers/product');
+const categoryRouter = require('./routers/category');
 
 // Enabling CORS
 app.use(cors());
@@ -22,7 +27,8 @@ const api = process.env.API_URL;
 console.log(`API URL: ${api}`);
 
 // Routers
-app.use(`{api}/products`, productRouter);
+app.use(`${api}/products`, productRouter);
+app.use(`${api}/category`, categoryRouter);
 
 // Database connection
 mongoose.connect(process.env.CONNECTION_STRING,{
@@ -38,9 +44,9 @@ mongoose.connect(process.env.CONNECTION_STRING,{
         console.log(err);
 })
 
-app.get('/',(req,res)=>{
+/*app.get('/',(req,res)=>{
     res.send('Hello World');
-});
+});*/
 
 
 app.listen(3000, ()=>{
