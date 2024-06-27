@@ -22,8 +22,8 @@ router.get('/:id', async(req,res)=>{
 
 router.post(`/`, async (req, res) => {
 
-    const category = await Category.findById(req.body.category);
-    if (!category) return res.status(400).send('Invalid Category')
+    /*const category = await Category.findById(req.body.category);
+    if (!category) return res.status(400).send('Invalid Category')*/
 
     let product = new Product({
         name:req.body.name,
@@ -77,6 +77,14 @@ router.delete('/:id', async(req,res)=>{
         return res.status(400).send('the product cannot be found!');
     }
     return res.status(400).json({success:false,error:err});
+})
+
+router.get('/get/count', async(req,res)=>{
+    const productCount = await Product.countDocuments();
+    if(!productCount){
+        return res.status(500).json({success:false});
+    }
+    res.send({productCount});
 })
 
 
