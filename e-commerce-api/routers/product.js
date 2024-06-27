@@ -71,4 +71,13 @@ router.put('/:id',async(req,res)=>{
     res.send(product);
 })
 
+router.delete('/:id', async(req,res)=>{
+    const product = await Product.findByIdAndDelete({_id:req.params.id});
+    if(!product){
+        return res.status(400).send('the product cannot be found!');
+    }
+    return res.status(400).json({success:false,error:err});
+})
+
+
 module.exports = router;
