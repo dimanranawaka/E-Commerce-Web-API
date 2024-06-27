@@ -4,7 +4,7 @@ const router = express.Router();
 const {Category} = require('../models/categorySchema');
 
 router.get(`/`, async (req, res) => {
-    const product = await Product.find().select('name -_id');
+    const product = await Product.find().populate('category');
     if (!product) {
         res.status(500).json({ success: false });
     }
