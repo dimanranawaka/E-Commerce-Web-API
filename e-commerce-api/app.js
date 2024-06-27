@@ -4,10 +4,12 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 
-const Product = require('./models/productSchema');
+// productRouter
+const productRouter = require('./routers/product');
+
+
 // Middleware
 app.use(bodyParser.json());
-// Middleware for logging
 app.use(morgan('tiny'));
 
 require('dotenv/config');
@@ -15,33 +17,10 @@ require('dotenv/config');
 const api = process.env.API_URL;
 console.log(`API URL: ${api}`);
 
-app.get(`${api}/products`, async (req, res) => {
-    const product = await Product.find();
-    if (!product) {
-        res.status(500).json({ success: false });
-    }
-    res.send(product);
-});
-app.post(`${api}/products`, (req, res) => {
-    const product = new Product({
-        name: req.body.name,
-        image: req.body.image,
-        countInStock: req.body.countInStock
-    });
+// Routers
+app.use(`{api}/products`, productRouter);
 
-    product.save()
-        .then((createdProduct) => {
-            console.log('Product saved successfully:', createdProduct);
-            res.status(201).json(createdProduct);
-        })
-        .catch((err) => {
-            console.error('Error saving product:', err);
-            res.status(500).json({
-                error: err,
-                success: false
-            });
-        });
-});
+// Database connection
 mongoose.connect(process.env.CONNECTION_STRING,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
