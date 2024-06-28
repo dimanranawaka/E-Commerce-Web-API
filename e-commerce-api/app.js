@@ -29,6 +29,7 @@ console.log(`API URL: ${api}`);
 // Routers
 app.use(`${api}/products`, productRouter);
 app.use(`${api}/category`, categoryRouter);
+app.use(`${api}/user`, require('./routers/user'));
 
 // Database connection
 mongoose.connect(process.env.CONNECTION_STRING,{
