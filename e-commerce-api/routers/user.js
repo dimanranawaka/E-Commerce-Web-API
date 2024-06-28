@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {User} = require('../models/userSchema');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 router.get('/:id',async (req,res)=>{
     const user = await User.findById(req.params.id).select('-passwordHash');
@@ -40,12 +41,17 @@ router.post('/', async (req,res)=>{
 
 router.post('/login',async (req,res)=>{
     const user = await User.findOne({email:req.body.email});
-
+    const secret = process.env.secret;
     if(!user){
         return res.status(400).send('The user not found');
     }
     if (user && bcrypt.compareSync(req.body.password, user.passwordHash)){
-        res.status(200).send('The user is authenticated');
+        const token = jwt.sign(
+            {
+                userId:user.id
+            },secret
+        );
+        res.status(200).send({user:user.email,token:token});
     }else {
         res.status(400).send('username or password is wrong');
     }
