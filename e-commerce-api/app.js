@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authJwt = require('./helper/jwt');
+const errorHandler = require('./helper/error-handler');
 
 process.on('uncaughtException', (error) => {
     console.error('Uncaught Exception:', error);
@@ -23,6 +24,8 @@ app.use(bodyParser.json());
 app.use(morgan('tiny'));
 // expressJwt Middleware
 app.use(authJwt());
+// Error Handler Middleware
+app.use(errorHandler);
 
 require('dotenv/config');
 
