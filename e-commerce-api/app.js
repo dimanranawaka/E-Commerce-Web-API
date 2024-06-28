@@ -22,7 +22,7 @@ app.options('*',cors());
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
 // expressJwt Middleware
-app.use(authJwt);
+app.use(authJwt());
 
 require('dotenv/config');
 
